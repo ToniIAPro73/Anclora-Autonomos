@@ -57,6 +57,88 @@ function HomePage() {
   const globalSnapRef = useRef<ScrollTrigger | null>(null);
 
   useEffect(() => {
+    const getActiveSection = () => {
+      const footer = document.querySelector('#footer') as HTMLElement | null;
+      if (footer) {
+        const rect = footer.getBoundingClientRect();
+        const visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+        if (visible > window.innerHeight * 0.3) {
+          return footer;
+        }
+      }
+
+      const sections = Array.from(document.querySelectorAll('main section')) as HTMLElement[];
+      if (sections.length === 0) return null;
+
+      const viewportCenter = window.innerHeight * 0.5;
+      let best: HTMLElement | null = null;
+      let bestDistance = Number.POSITIVE_INFINITY;
+
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const center = rect.top + rect.height * 0.5;
+        const distance = Math.abs(center - viewportCenter);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          best = section;
+        }
+      });
+
+      return best;
+    };
+
+    const restoreSection = (section: HTMLElement | null, fallbackY: number) => {
+      if (!section) {
+        window.scrollTo({ top: fallbackY, behavior: 'auto' });
+        return;
+      }
+
+      if (section.id === 'contact' || section.id === 'footer') {
+        section.scrollIntoView({ behavior: 'auto' });
+        return;
+      }
+
+      const headerHeight = window.scrollY > 50 ? 70 : 90;
+      const sectionTop = window.scrollY + section.getBoundingClientRect().top;
+      let top = sectionTop - headerHeight - 10;
+
+      if (section.classList.contains('section-pinned')) {
+        const st = ScrollTrigger.getAll().find((trigger) => {
+          const triggerEl = trigger.vars.trigger as Element | undefined;
+          return triggerEl === section;
+        });
+
+        if (st) {
+          const span = Math.max(0, (st.end ?? st.start) - st.start);
+          top = st.start + span * 0.42;
+        }
+      } else if (section.id === 'valuation') {
+        const formCard = document.querySelector('#valuation-form-card') as HTMLElement | null;
+        if (formCard) {
+          const viewportAvailable = window.innerHeight - headerHeight;
+          const formTop = window.scrollY + formCard.getBoundingClientRect().top;
+          const centeredOffset = Math.max(0, (viewportAvailable - formCard.offsetHeight) / 2);
+          top = formTop - headerHeight - centeredOffset;
+        }
+      } else if (section.id === 'insights') {
+        const cardsBlock = section.querySelector('[data-insights-cards]') as HTMLElement | null;
+        if (cardsBlock) {
+          const viewportAvailable = window.innerHeight - headerHeight;
+          const cardsTop = window.scrollY + cardsBlock.getBoundingClientRect().top;
+          const centeredOffset = Math.max(0, (viewportAvailable - cardsBlock.offsetHeight) / 2);
+          top = cardsTop - headerHeight - centeredOffset - 6;
+        }
+      } else if (section.id === 'about') {
+        const firstCard = section.querySelector('.card-premium') as HTMLElement | null;
+        if (firstCard) {
+          const cardTop = window.scrollY + firstCard.getBoundingClientRect().top;
+          top = cardTop - headerHeight - 18;
+        }
+      }
+
+      window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
+    };
+
     // Initialize global snap for pinned sections
     const setupGlobalSnap = () => {
       globalSnapRef.current?.kill();
@@ -106,11 +188,12 @@ function HomePage() {
 
     // Delay to ensure all ScrollTriggers are created
     const currentY = window.scrollY;
+    const activeSection = getActiveSection();
     const timer = setTimeout(() => {
       ScrollTrigger.refresh();
       setupGlobalSnap();
-      // Keep the user's current section/position stable after i18n re-render.
-      window.scrollTo({ top: currentY, behavior: 'auto' });
+      // Keep user's current section stable after i18n re-render.
+      restoreSection(activeSection, currentY);
     }, 100);
 
     return () => {

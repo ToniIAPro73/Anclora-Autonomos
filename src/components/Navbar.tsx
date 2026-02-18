@@ -39,6 +39,23 @@ export function Navbar() {
   const changeLanguage = (lang: string) => {
     if (lang === i18n.language) return;
 
+    const footer = document.querySelector('#footer') as HTMLElement | null;
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const footerVisible = footerRect.top < window.innerHeight && footerRect.bottom > 0;
+      if (footerVisible) {
+        const footerTop = window.scrollY + footerRect.top;
+        sessionStorage.setItem('anclora:lang-anchor', '#footer');
+        sessionStorage.setItem('anclora:lang-offset', String(window.scrollY - footerTop));
+        sessionStorage.removeItem('anclora:lang-pinned-progress');
+        sessionStorage.setItem('anclora:lang-y', String(window.scrollY));
+        sessionStorage.setItem('anclora:lang-switching', '1');
+        document.documentElement.setAttribute('data-lang-switching', 'true');
+        i18n.changeLanguage(lang);
+        return;
+      }
+    }
+
     const activePinned = ScrollTrigger.getAll().find((trigger) => {
       if (!trigger.vars.pin) return false;
       const end = trigger.end ?? trigger.start;
@@ -59,10 +76,26 @@ export function Navbar() {
 
     if (activeSection?.id) {
       sessionStorage.setItem('anclora:lang-anchor', `#${activeSection.id}`);
+      const sectionTop = window.scrollY + activeSection.getBoundingClientRect().top;
+      sessionStorage.setItem('anclora:lang-offset', String(window.scrollY - sectionTop));
     } else {
       sessionStorage.removeItem('anclora:lang-anchor');
+      sessionStorage.removeItem('anclora:lang-offset');
     }
+
+    if (activePinned) {
+      const start = activePinned.start;
+      const end = activePinned.end ?? activePinned.start;
+      const span = Math.max(1, end - start);
+      const progress = Math.min(1, Math.max(0, (window.scrollY - start) / span));
+      sessionStorage.setItem('anclora:lang-pinned-progress', String(progress));
+    } else {
+      sessionStorage.removeItem('anclora:lang-pinned-progress');
+    }
+
     sessionStorage.setItem('anclora:lang-y', String(window.scrollY));
+    sessionStorage.setItem('anclora:lang-switching', '1');
+    document.documentElement.setAttribute('data-lang-switching', 'true');
 
     i18n.changeLanguage(lang);
   };

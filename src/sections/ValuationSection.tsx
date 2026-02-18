@@ -128,6 +128,7 @@ export function ValuationSection() {
           <div className="lg:col-span-7">
             {/* Headline */}
             <div ref={headlineRef} className="mb-8">
+              <p className="text-eyebrow mb-4">{t('nav.valuation')}</p>
               <h2 className="font-display text-4xl lg:text-5xl xl:text-6xl font-bold text-anclora-navy dark:text-anclora-cream leading-tight mb-6">
                 {t('valuation.title')}
               </h2>

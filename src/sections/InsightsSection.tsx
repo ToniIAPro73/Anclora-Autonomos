@@ -92,6 +92,7 @@ export function InsightsSection() {
       <div className="w-full px-6 lg:pl-12 lg:pr-[136px]">
         {/* Headline */}
         <div ref={headlineRef} className="mb-12">
+          <p className="text-eyebrow mb-4">{t('nav.insights')}</p>
           <h2 className="font-display text-4xl lg:text-5xl xl:text-6xl font-bold text-anclora-navy dark:text-anclora-cream leading-tight mb-4">
             {t('insights.title')}
           </h2>

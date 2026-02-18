@@ -87,14 +87,25 @@ function HomePage() {
       return best;
     };
 
-    const restoreSection = (section: HTMLElement | null, fallbackY: number) => {
+    const restoreSection = (
+      section: HTMLElement | null,
+      fallbackY: number,
+      exactOffset: number | null,
+      pinnedProgress: number | null
+    ) => {
       if (!section) {
         window.scrollTo({ top: fallbackY, behavior: 'auto' });
         return;
       }
 
       if (section.id === 'contact' || section.id === 'footer') {
-        section.scrollIntoView({ behavior: 'auto' });
+        // Keep the exact relative offset inside Contact/Footer across language changes.
+        if (exactOffset !== null) {
+          const sectionTop = window.scrollY + section.getBoundingClientRect().top;
+          window.scrollTo({ top: Math.max(0, sectionTop + exactOffset), behavior: 'auto' });
+        } else {
+          window.scrollTo({ top: Math.max(0, fallbackY), behavior: 'auto' });
+        }
         return;
       }
 
@@ -110,8 +121,14 @@ function HomePage() {
 
         if (st) {
           const span = Math.max(0, (st.end ?? st.start) - st.start);
-          top = st.start + span * 0.42;
+          if (pinnedProgress !== null) {
+            top = st.start + span * pinnedProgress;
+          } else {
+            top = st.start + span * 0.42;
+          }
         }
+      } else if (exactOffset !== null) {
+        top = sectionTop + exactOffset;
       } else if (section.id === 'valuation') {
         const formCard = document.querySelector('#valuation-form-card') as HTMLElement | null;
         if (formCard) {
@@ -191,22 +208,49 @@ function HomePage() {
     const activeSection = getActiveSection();
     const storedAnchor = sessionStorage.getItem('anclora:lang-anchor');
     const storedYRaw = sessionStorage.getItem('anclora:lang-y');
+    const storedOffsetRaw = sessionStorage.getItem('anclora:lang-offset');
+    const storedPinnedProgressRaw = sessionStorage.getItem('anclora:lang-pinned-progress');
+    const wasLangSwitching = sessionStorage.getItem('anclora:lang-switching') === '1';
     const storedY = storedYRaw ? Number(storedYRaw) : currentY;
+    const storedOffset = storedOffsetRaw ? Number(storedOffsetRaw) : null;
+    const storedPinnedProgress = storedPinnedProgressRaw ? Number(storedPinnedProgressRaw) : null;
+    const exactOffset = storedOffset !== null && Number.isFinite(storedOffset) ? storedOffset : null;
+    const pinnedProgress =
+      storedPinnedProgress !== null && Number.isFinite(storedPinnedProgress)
+        ? Math.min(1, Math.max(0, storedPinnedProgress))
+        : null;
     const fallbackY = Number.isFinite(storedY) ? storedY : currentY;
     const timer = setTimeout(() => {
       ScrollTrigger.refresh();
-      setupGlobalSnap();
       // Keep user's current section stable after i18n re-render.
       const anchorSection = storedAnchor
         ? (document.querySelector(storedAnchor) as HTMLElement | null)
         : null;
-      restoreSection(anchorSection ?? activeSection, fallbackY);
+      restoreSection(anchorSection ?? activeSection, fallbackY, exactOffset, pinnedProgress);
+      // Re-enable global snap after restoring position to avoid transition flicker.
+      requestAnimationFrame(() => {
+        setupGlobalSnap();
+        requestAnimationFrame(() => {
+          if (wasLangSwitching) {
+            document.documentElement.removeAttribute('data-lang-switching');
+            sessionStorage.removeItem('anclora:lang-switching');
+          }
+        });
+      });
       sessionStorage.removeItem('anclora:lang-anchor');
       sessionStorage.removeItem('anclora:lang-y');
+      sessionStorage.removeItem('anclora:lang-offset');
+      sessionStorage.removeItem('anclora:lang-pinned-progress');
     }, 100);
+
+    const failsafe = window.setTimeout(() => {
+      document.documentElement.removeAttribute('data-lang-switching');
+      sessionStorage.removeItem('anclora:lang-switching');
+    }, 1500);
 
     return () => {
       clearTimeout(timer);
+      clearTimeout(failsafe);
       globalSnapRef.current?.kill();
       globalSnapRef.current = null;
     };

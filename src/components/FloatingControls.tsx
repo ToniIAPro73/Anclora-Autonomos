@@ -8,7 +8,7 @@ interface FloatingControlsProps {
 
 export function FloatingControls({ onOpenCookieModal }: FloatingControlsProps) {
   const { t, i18n } = useTranslation();
-  const [showScrollNav, setShowScrollNav] = useState(false);
+  const [showScrollNav, setShowScrollNav] = useState(true);
   const [showUpButton, setShowUpButton] = useState(false);
   const [showDownButton, setShowDownButton] = useState(true);
 
@@ -16,12 +16,17 @@ export function FloatingControls({ onOpenCookieModal }: FloatingControlsProps) {
     const handleScroll = () => {
       const scrolled = window.scrollY;
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      
-      setShowScrollNav(scrolled > 100);
-      setShowUpButton(scrolled > 200);
-      setShowDownButton(scrolled < totalHeight - 200);
+      const upThreshold = Math.max(0, totalHeight * 0.3);
+      const downThreshold = Math.max(0, totalHeight * 0.7);
+      const nearBottom = scrolled >= totalHeight - 120;
+
+      // Hero/top: only down. Middle band: both. Bottom/footer: only up.
+      setShowScrollNav(totalHeight > 300);
+      setShowUpButton(scrolled >= upThreshold);
+      setShowDownButton(scrolled <= downThreshold && !nearBottom);
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

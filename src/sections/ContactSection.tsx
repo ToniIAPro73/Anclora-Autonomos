@@ -102,6 +102,7 @@ export function ContactSection() {
               
               {/* Content Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
+                <p className="text-eyebrow mb-4">{t('nav.contact')}</p>
                 <h2 className="font-display text-4xl lg:text-5xl font-bold text-anclora-cream leading-tight mb-4">
                   {t('contact.title').split('.')[0]}.<br />{t('contact.title').split('.')[1]}.
                 </h2>

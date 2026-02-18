@@ -19,7 +19,7 @@ export function PhilosophySection() {
 
     const ctx = gsap.context(() => {
       // Reveal animation for cards
-      const cardElements = cards.querySelectorAll('.premium-card');
+      const cardElements = cards.querySelectorAll('.philosophy-card');
       
       cardElements.forEach((card, index) => {
         gsap.fromTo(
@@ -70,7 +70,8 @@ export function PhilosophySection() {
     >
       <div className="max-w-[1400px] mx-auto px-[5%]">
         <div className="text-center mb-14 lg:mb-16">
-          <h2 className="font-display text-4xl lg:text-5xl font-bold text-anclora-navy">
+          <p className="text-eyebrow mb-4">{t('nav.invest')}</p>
+          <h2 className="font-display text-4xl lg:text-5xl font-bold text-anclora-cream">
             {t('philosophy.sectionTitle')}
           </h2>
         </div>
@@ -82,7 +83,7 @@ export function PhilosophySection() {
           {philosophyCards.map((card, index) => (
             <div 
               key={index} 
-              className="premium-card p-10 lg:p-12 text-center"
+              className="philosophy-card p-10 lg:p-12 text-center"
             >
               <div className="flex justify-center mb-6">
                 <card.icon 

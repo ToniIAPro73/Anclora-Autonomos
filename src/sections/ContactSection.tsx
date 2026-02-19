@@ -509,7 +509,7 @@ export function ContactSection() {
 
                 <div className="lg:col-span-2 space-y-2.5 mt-1">
                   {captchaProvider !== 'none' && (
-                    <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                    <div className="captcha-shell">
                       <p className="text-sm text-anclora-text-muted mb-3">{t('contact.form.captchaLabel')}</p>
 
                       {captchaProvider === 'recaptcha' && (
@@ -518,7 +518,7 @@ export function ContactSection() {
                             <p className="text-sm text-red-200">{t('contact.form.captchaNotConfigured')}</p>
                           ) : (
                             <>
-                              <div ref={recaptchaContainerRef} />
+                              <div ref={recaptchaContainerRef} className="captcha-widget-frame" />
                               {!captchaToken && (
                                 <p className="text-xs text-anclora-text-muted mt-3">
                                   {captchaReady ? t('contact.form.captchaVerifyPrompt') : t('contact.form.captchaLoading')}

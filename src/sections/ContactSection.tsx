@@ -259,7 +259,7 @@ export function ContactSection() {
           message: formData.message || null,
           newsletter_opt_in: formData.newsletter,
         },
-        source: 'web-cta',
+        source: 'web',
         source_system: 'cta_web',
         source_channel: 'website',
         source_detail: 'private-estates-contact-form',

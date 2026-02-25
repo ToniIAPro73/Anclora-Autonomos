@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, ChevronDown } from 'lucide-react';
 
 export function HeroSection() {
   const { t } = useTranslation();
@@ -257,19 +256,42 @@ export function HeroSection() {
             onClick={handleSearch}
             className="btn-anclora-premium !min-w-[180px] !h-[60px] !py-0"
           >
-            <Search className="w-[18px] h-[18px]" strokeWidth={2.5} />
+            <svg
+              className="w-[18px] h-[18px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
             {t('search.button')}
           </button>
         </div>
       </div>
 
       {/* Hero Down Indicator */}
-      <button 
+      <button
         onClick={scrollToPhilosophy}
         className="hero-down"
       >
         <span>{t('hero.discover')}</span>
-        <ChevronDown className="w-6 h-6" strokeWidth={2} />
+        <svg
+          className="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
       </button>
     </section>
   );

@@ -1,33 +1,62 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 
 import es from './locales/es.json';
-import en from './locales/en.json';
-import fr from './locales/fr.json';
-import de from './locales/de.json';
+
+const SUPPORTED_LANGUAGES = ['es', 'en', 'de', 'fr'] as const;
+type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 const resources = {
   es: { translation: es },
-  en: { translation: en },
-  fr: { translation: fr },
-  de: { translation: de },
+};
+
+const languageLoaders: Record<Exclude<SupportedLanguage, 'es'>, () => Promise<{ default: unknown }>> = {
+  en: () => import('./locales/en.json'),
+  de: () => import('./locales/de.json'),
+  fr: () => import('./locales/fr.json'),
+};
+
+const loadedLanguages = new Set<SupportedLanguage>(['es']);
+
+const normalizeLanguage = (language: string | null | undefined): SupportedLanguage => {
+  if (!language) return 'es';
+  const base = language.toLowerCase().split('-')[0];
+  return (SUPPORTED_LANGUAGES as readonly string[]).includes(base) ? (base as SupportedLanguage) : 'es';
+};
+
+export const ensureLanguageResources = async (language: string): Promise<SupportedLanguage> => {
+  const normalizedLanguage = normalizeLanguage(language);
+  if (loadedLanguages.has(normalizedLanguage)) return normalizedLanguage;
+
+  const loader = languageLoaders[normalizedLanguage as Exclude<SupportedLanguage, 'es'>];
+  if (!loader) return 'es';
+
+  const module = await loader();
+  i18n.addResourceBundle(normalizedLanguage, 'translation', module.default, true, true);
+  loadedLanguages.add(normalizedLanguage);
+  return normalizedLanguage;
 };
 
 i18n
-  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
     fallbackLng: 'es',
     lng: 'es',
+    supportedLngs: SUPPORTED_LANGUAGES,
+    load: 'languageOnly',
     interpolation: {
       escapeValue: false,
     },
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
-    },
   });
+
+if (typeof window !== 'undefined') {
+  const preferredLanguage = normalizeLanguage(window.localStorage.getItem('i18nextLng'));
+  if (preferredLanguage !== 'es') {
+    void ensureLanguageResources(preferredLanguage).then((resolvedLanguage) => {
+      void i18n.changeLanguage(resolvedLanguage);
+    });
+  }
+}
 
 export default i18n;

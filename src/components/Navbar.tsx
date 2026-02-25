@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ensureLanguageResources } from '../i18n';
 
 export function Navbar() {
   const { t, i18n } = useTranslation();
@@ -51,7 +52,8 @@ export function Navbar() {
   };
 
   const changeLanguage = async (lang: string) => {
-    if (lang === i18n.language) return;
+    const targetLanguage = await ensureLanguageResources(lang);
+    if (targetLanguage === i18n.language) return;
 
     const footer = document.querySelector('#footer') as HTMLElement | null;
     if (footer) {
@@ -65,7 +67,8 @@ export function Navbar() {
         sessionStorage.setItem('anclora:lang-y', String(window.scrollY));
         sessionStorage.setItem('anclora:lang-switching', '1');
         document.documentElement.setAttribute('data-lang-switching', 'true');
-        i18n.changeLanguage(lang);
+        await i18n.changeLanguage(targetLanguage);
+        window.localStorage.setItem('i18nextLng', targetLanguage);
         return;
       }
     }
@@ -112,7 +115,8 @@ export function Navbar() {
     sessionStorage.setItem('anclora:lang-switching', '1');
     document.documentElement.setAttribute('data-lang-switching', 'true');
 
-    i18n.changeLanguage(lang);
+    await i18n.changeLanguage(targetLanguage);
+    window.localStorage.setItem('i18nextLng', targetLanguage);
   };
 
   const scrollToSection = (href: string) => {

@@ -1635,10 +1635,4 @@
     }
   }
 
-  @media (max-width: 420px) {
-    .captcha-widget-frame iframe {
-      transform: scale(0.86);
-      transform-origin: left center;
-    }
-  }
 }

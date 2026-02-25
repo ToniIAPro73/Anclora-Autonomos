@@ -14,6 +14,7 @@ type RecaptchaApi = {
     container: HTMLElement,
     parameters: {
       sitekey: string;
+      size?: 'normal' | 'compact';
       callback?: (token: string) => void;
       'expired-callback'?: () => void;
       'error-callback'?: () => void;
@@ -162,11 +163,13 @@ export function ContactSection() {
         const api = window.grecaptcha;
         const container = recaptchaContainerRef.current;
         if (!api || !container || recaptchaWidgetIdRef.current !== null) return;
+        const isMobileViewport = window.matchMedia('(max-width: 420px)').matches;
 
         api.ready(() => {
           recaptchaWidgetIdRef.current = api.render(container, {
             sitekey: recaptchaSiteKey,
             theme: 'dark',
+            size: isMobileViewport ? 'compact' : 'normal',
             callback: (token) => setCaptchaToken(token),
             'expired-callback': () => setCaptchaToken(''),
             'error-callback': () => setCaptchaToken(''),
@@ -367,16 +370,16 @@ export function ContactSection() {
                     <a
                       key={item.labelKey}
                       href={item.href}
-                      className="flex items-center gap-4 group"
+                      className="flex items-center gap-4 group min-w-0"
                     >
                       <div className="w-12 h-12 rounded-full bg-anclora-gold/10 flex items-center justify-center flex-shrink-0 group-hover:bg-anclora-gold/20 transition-colors">
                         <item.icon className="w-5 h-5 text-anclora-gold" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-sm text-anclora-text-muted mb-0.5">
                           {t(item.labelKey)}
                         </p>
-                        <p className="text-anclora-cream font-medium group-hover:text-anclora-gold transition-colors">
+                        <p className="text-anclora-cream font-medium group-hover:text-anclora-gold transition-colors break-all sm:break-words">
                           {item.value}
                         </p>
                       </div>

@@ -56,16 +56,18 @@ export function PropertiesSection() {
   const formatPrice = (priceEur: number) => {
     if (isEnglish) {
       const priceGbp = priceEur * EUR_TO_GBP_RATE;
+      const hasDecimals = Math.abs(priceGbp % 1) > Number.EPSILON;
       return new Intl.NumberFormat('en-GB', {
         style: 'currency',
         currency: 'GBP',
-        minimumFractionDigits: 2,
+        minimumFractionDigits: hasDecimals ? 2 : 0,
         maximumFractionDigits: 2,
       }).format(priceGbp);
     }
 
+    const hasDecimals = Math.abs(priceEur % 1) > Number.EPSILON;
     const formatted = new Intl.NumberFormat(numberLocale, {
-      minimumFractionDigits: 2,
+      minimumFractionDigits: hasDecimals ? 2 : 0,
       maximumFractionDigits: 2,
     }).format(priceEur);
     return `${formatted}€`;

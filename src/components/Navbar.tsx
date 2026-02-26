@@ -148,6 +148,10 @@ export function Navbar() {
 
   const scrollToSection = (href: string) => {
     const performScroll = async () => {
+      const jumpTo = (y: number) => {
+        window.scrollTo(0, Math.max(0, y));
+      };
+
       const resolveElement = async () => {
         const maxWaitMs = 8000;
         const pollIntervalMs = 50;
@@ -195,8 +199,8 @@ export function Navbar() {
       let top = targetTop - headerHeight - 10;
 
       if (href === '#contact') {
-        // Keep the exact same navigation behavior as the floating CONTACTAR button.
-        elementNode.scrollIntoView({ behavior: 'smooth' });
+        // Force an immediate jump to avoid animated traversal across pinned sections.
+        jumpTo(targetTop - headerHeight - 10);
         return;
       }
 
@@ -250,10 +254,7 @@ export function Navbar() {
         }
       }
 
-      window.scrollTo({
-        top: Math.max(0, top),
-        behavior: 'auto',
-      });
+      jumpTo(top);
     };
 
     if (isMenuOpen) {

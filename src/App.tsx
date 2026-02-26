@@ -59,7 +59,7 @@ type ScrollTriggerInstance = {
   start: number;
   end?: number;
   vars: {
-    pin?: boolean;
+    pin?: unknown;
     trigger?: Element;
   };
 };

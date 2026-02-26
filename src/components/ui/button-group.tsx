@@ -1,4 +1,3 @@
-import { Slot } from "@radix-ui/react-slot"
 /* eslint-disable react-refresh/only-export-components */
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"

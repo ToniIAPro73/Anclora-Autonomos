@@ -14,7 +14,7 @@ const properties = [
     location: 'Cala Fornells, Mallorca',
     beds: 5,
     sqm: 450,
-    price: '€3,200,000',
+    priceEur: 3200000,
     image: '/images/collection-villa-1.jpg',
   },
   {
@@ -24,7 +24,7 @@ const properties = [
     location: 'Santa Ponsa, Mallorca',
     beds: 4,
     sqm: 380,
-    price: '€2,850,000',
+    priceEur: 2850000,
     image: '/images/collection-villa-2.jpg',
   },
   {
@@ -34,18 +34,57 @@ const properties = [
     location: 'Palma de Mallorca',
     beds: 3,
     sqm: 220,
-    price: '€1,950,000',
+    priceEur: 1950000,
     image: '/images/collection-villa-3.jpg',
   },
 ];
 
+const EUR_TO_GBP_RATE = 0.86;
+const SQM_TO_SQFT = 10.7639;
+
 export function PropertiesSection() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const ctaRef = useRef<HTMLButtonElement>(null);
   const [isMobileLayout, setIsMobileLayout] = useState(() => window.innerWidth <= 1024);
+  const isEnglish = i18n.language.startsWith('en');
+  const isGerman = i18n.language.startsWith('de');
+  const numberLocale = isGerman ? 'de-DE' : isEnglish ? 'en-GB' : 'es-ES';
+
+  const formatPrice = (priceEur: number) => {
+    if (isEnglish) {
+      const priceGbp = priceEur * EUR_TO_GBP_RATE;
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(priceGbp);
+    }
+
+    const formatted = new Intl.NumberFormat(numberLocale, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(priceEur);
+    return `${formatted}€`;
+  };
+
+  const formatArea = (sqm: number) => {
+    if (isEnglish) {
+      const sqFt = sqm * SQM_TO_SQFT;
+      const formatted = new Intl.NumberFormat('en-GB', {
+        maximumFractionDigits: 0,
+      }).format(sqFt);
+      return `${formatted} sq ft`;
+    }
+
+    const formatted = new Intl.NumberFormat(numberLocale, {
+      maximumFractionDigits: 0,
+    }).format(sqm);
+    return `${formatted} m²`;
+  };
 
   useEffect(() => {
     const onResize = () => setIsMobileLayout(window.innerWidth <= 1024);
@@ -190,10 +229,10 @@ export function PropertiesSection() {
                     </div>
                     <div className="flex items-center gap-1">
                       <Maximize className="w-4 h-4" />
-                      <span>{property.sqm} m²</span>
+                      <span>{formatArea(property.sqm)}</span>
                     </div>
                   </div>
-                  <span className="font-display text-2xl font-bold text-anclora-gold">{property.price}</span>
+                  <span className="font-display text-2xl font-bold text-anclora-gold">{formatPrice(property.priceEur)}</span>
                 </div>
               </article>
             ))}
@@ -263,13 +302,13 @@ export function PropertiesSection() {
                     </div>
                     <div className="flex items-center gap-1">
                       <Maximize className="w-4 h-4" />
-                      <span>{property.sqm} m²</span>
+                      <span>{formatArea(property.sqm)}</span>
                     </div>
                   </div>
 
                   <div className="mt-auto">
                     <span className="font-display text-2xl font-bold text-anclora-gold">
-                      {property.price}
+                      {formatPrice(property.priceEur)}
                     </span>
                   </div>
                 </div>

@@ -434,6 +434,30 @@ export function Navbar() {
                 </button>
               </div>
             </div>
+
+            {/* Mobile Language Switcher */}
+            <div className="md:hidden flex-shrink-0">
+              <div className="lang-switcher mobile-header-lang-switcher">
+                <button
+                  className={`lang-btn ${currentLang === 'es' ? 'active' : ''}`}
+                  onClick={() => changeLanguage('es')}
+                >
+                  ES
+                </button>
+                <button
+                  className={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}
+                  onClick={() => changeLanguage('en')}
+                >
+                  EN
+                </button>
+                <button
+                  className={`lang-btn ${currentLang === 'de' ? 'active' : ''}`}
+                  onClick={() => changeLanguage('de')}
+                >
+                  DE
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -456,12 +480,12 @@ export function Navbar() {
                   alt={t('menuOverlay.brand')}
                   loading="eager"
                   decoding="async"
-                  className="h-[124px] w-auto object-contain"
+                  className="w-[300px] max-w-[58vw] h-auto object-contain"
                 />
               </div>
 
               <div className="premium-menu-header-meta">
-                <div className="lang-switcher">
+                <div className="lang-switcher premium-menu-lang-switcher">
                   <button
                     className={`lang-btn ${currentLang === 'es' ? 'active' : ''}`}
                     onClick={() => changeLanguage('es')}

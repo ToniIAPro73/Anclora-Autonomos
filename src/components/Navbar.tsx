@@ -305,7 +305,7 @@ export function Navbar() {
                 }}
               >
                 <img
-                  src="/logo-anclora-private-estates-exp.png"
+                  src="/logos/logo-anclora-private-estates-exp.png"
                   alt="Anclora Private Estates"
                   loading="eager"
                   decoding="async"

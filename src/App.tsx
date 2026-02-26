@@ -107,18 +107,21 @@ function HomePage() {
       setShowDeferredSections(true);
       window.removeEventListener('scroll', revealDeferredSections);
       window.removeEventListener('touchstart', revealDeferredSections);
+      window.removeEventListener('pointerdown', revealDeferredSections);
       window.removeEventListener('keydown', revealDeferredSections);
       window.removeEventListener('anclora:reveal-deferred-sections', revealDeferredSections);
     };
 
     window.addEventListener('scroll', revealDeferredSections, { passive: true });
     window.addEventListener('touchstart', revealDeferredSections, { passive: true });
+    window.addEventListener('pointerdown', revealDeferredSections, { passive: true });
     window.addEventListener('keydown', revealDeferredSections);
     window.addEventListener('anclora:reveal-deferred-sections', revealDeferredSections);
 
     return () => {
       window.removeEventListener('scroll', revealDeferredSections);
       window.removeEventListener('touchstart', revealDeferredSections);
+      window.removeEventListener('pointerdown', revealDeferredSections);
       window.removeEventListener('keydown', revealDeferredSections);
       window.removeEventListener('anclora:reveal-deferred-sections', revealDeferredSections);
     };

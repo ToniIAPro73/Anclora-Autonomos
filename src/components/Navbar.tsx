@@ -128,19 +128,21 @@ export function Navbar() {
   const scrollToSection = (href: string) => {
     const performScroll = async () => {
       const resolveElement = async () => {
-        const maxWaitMs = 3200;
+        const maxWaitMs = 8000;
         const pollIntervalMs = 50;
         const startedAt = performance.now();
-        let revealRequested = false;
+        let lastRevealRequestAt = -Infinity;
 
         while (performance.now() - startedAt < maxWaitMs) {
           const target = document.querySelector(href) as HTMLElement | null;
           if (target) return target;
 
-          // Ask HomePage to mount deferred sections before retrying.
-          if (!revealRequested) {
+          // Ask HomePage to mount deferred sections; keep retrying in case
+          // the listener is not attached yet on a hard reload.
+          const now = performance.now();
+          if (now - lastRevealRequestAt >= 250) {
             window.dispatchEvent(new Event('anclora:reveal-deferred-sections'));
-            revealRequested = true;
+            lastRevealRequestAt = now;
           }
 
           await new Promise<void>((resolve) => {

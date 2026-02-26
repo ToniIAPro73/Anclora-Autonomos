@@ -304,25 +304,25 @@ export function Navbar() {
                   padding: isScrolled ? '4px 12px' : '6px 14px'
                 }}
               >
-                {isMobileViewport ? (
-                  <span className="font-semibold tracking-[0.06em] text-[var(--pe-cream)] text-[0.58rem] sm:text-[0.72rem] text-center leading-tight whitespace-nowrap">
-                    ANCLORA PRIVATE ESTATES
-                  </span>
-                ) : (
-                  <img
-                    src="/logo-anclora-private-estates-exp.png"
-                    alt="Anclora Private Estates"
-                    loading="eager"
-                    decoding="async"
-                    className={`transition-[all] [transition-duration:800ms] object-contain group-hover:scale-[1.05] group-hover:brightness-[1.2] ${
-                      isScrolled ? 'h-[45px]' : 'h-[55px]'
-                    }`}
-                    style={{
-                      filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.5))',
-                      transitionTimingFunction: 'cubic-bezier(0.19, 1, 0.22, 1)',
-                    }}
-                  />
-                )}
+                <img
+                  src="/logo-anclora-private-estates-exp.png"
+                  alt="Anclora Private Estates"
+                  loading="eager"
+                  decoding="async"
+                  className={`transition-[all] [transition-duration:800ms] object-contain group-hover:scale-[1.05] group-hover:brightness-[1.2] ${
+                    isMobileViewport
+                      ? isScrolled
+                        ? 'h-[28px] sm:h-[32px]'
+                        : 'h-[32px] sm:h-[36px]'
+                      : isScrolled
+                        ? 'h-[45px]'
+                        : 'h-[55px]'
+                  }`}
+                  style={{
+                    filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.5))',
+                    transitionTimingFunction: 'cubic-bezier(0.19, 1, 0.22, 1)',
+                  }}
+                />
               </a>
             </div>
 

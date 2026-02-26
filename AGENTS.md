@@ -2,9 +2,10 @@
 
 ## Reglas operativas de comandos
 
-- No ejecutar comandos de build (por ejemplo `npm run build`) ni otros comandos no solicitados.
-- Solo ejecutar `npm run lint` y `npm run test` cuando sea necesario validar cambios.
-- Cualquier comando distinto de `npm run lint` o `npm run test` requiere autorización explícita del usuario en ese turno.
+- No ejecutar comandos de build (por ejemplo `npm run build`).
+- Se permite ejecutar comandos de trabajo (lectura, búsqueda, edición, ejecución local) sin autorización explícita previa, siempre que no comprometan la integridad del proyecto.
+- No ejecutar comandos destructivos o de riesgo (por ejemplo eliminar archivos/carpetas, reseteos forzados, reescrituras peligrosas) sin autorización explícita del usuario en ese turno.
+- Ejecutar `npm run lint` y `npm run test` solo cuando el cambio tenga suficiente entidad como para requerir validación.
 
 ## Situación actual del proyecto
 

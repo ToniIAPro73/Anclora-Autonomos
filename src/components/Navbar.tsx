@@ -397,7 +397,13 @@ export function Navbar() {
               </button>
 
               <div className="premium-menu-brand">
-                <span>{t('menuOverlay.brand')}</span>
+                <img
+                  src="/logo-anclora-private-estates-texto.png"
+                  alt={t('menuOverlay.brand')}
+                  loading="eager"
+                  decoding="async"
+                  className="h-[22px] w-auto object-contain"
+                />
               </div>
 
               <div className="premium-menu-header-meta">

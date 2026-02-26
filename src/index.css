@@ -686,6 +686,13 @@
     text-transform: uppercase;
   }
 
+  .premium-menu-brand-logo {
+    width: min(560px, 64vw);
+    max-width: min(64vw, 560px);
+    height: auto;
+    object-fit: contain;
+  }
+
   .mobile-header-lang-switcher {
     display: inline-flex;
     align-items: center;
@@ -708,6 +715,19 @@
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .premium-menu-current-lang {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 2.4ch;
+    color: rgba(15, 28, 39, 0.86);
+    font-family: "Montserrat", var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
@@ -753,34 +773,6 @@
     font-size: clamp(1.15rem, 1.6vw, 1.4rem);
     line-height: 1;
     color: #101a23;
-  }
-
-  .premium-menu-lang-switcher {
-    border: none;
-    background: transparent;
-    padding: 0;
-    gap: 6px;
-  }
-
-  .premium-menu-lang-switcher .lang-btn {
-    color: rgba(15, 28, 39, 0.72);
-    background: #ffffff;
-    border: 1px solid rgba(18, 34, 46, 0.16);
-    border-radius: 0;
-    min-width: 38px;
-    padding: 7px 10px;
-  }
-
-  .premium-menu-lang-switcher .lang-btn:hover {
-    color: rgba(15, 28, 39, 0.72);
-    background: #ffffff;
-  }
-
-  .premium-menu-lang-switcher .lang-btn.active {
-    color: #f5f6f2;
-    background: #10212b;
-    border-color: #10212b;
-    box-shadow: none;
   }
 
   .premium-menu-subheader {
@@ -1556,8 +1548,13 @@
     }
 
     .premium-menu-brand {
-      font-size: clamp(0.82rem, 3vw, 1rem);
+      font-size: clamp(0.92rem, 3.6vw, 1.2rem);
       letter-spacing: 0.2em;
+    }
+
+    .premium-menu-brand-logo {
+      width: min(500px, 68vw);
+      max-width: 68vw;
     }
 
     .premium-menu-content {
@@ -1613,14 +1610,14 @@
       font-size: 0.58rem;
     }
 
-    .premium-menu-header-meta .premium-menu-lang-switcher {
-      gap: 4px;
+    .premium-menu-brand-logo {
+      width: min(460px, 72vw);
+      max-width: 72vw;
     }
 
-    .premium-menu-header-meta .premium-menu-lang-switcher .lang-btn {
-      min-width: 30px;
-      padding: 5px 7px;
-      font-size: 0.58rem;
+    .premium-menu-current-lang {
+      font-size: 0.76rem;
+      letter-spacing: 0.12em;
     }
 
     .premium-menu-overlay { padding-top: 0; }

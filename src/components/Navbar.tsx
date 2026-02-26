@@ -286,6 +286,11 @@ export function Navbar() {
   }, [isMenuOpen]);
 
   const currentLang = i18n.language;
+  const currentLangCode = currentLang.toLowerCase().startsWith('en')
+    ? 'EN'
+    : currentLang.toLowerCase().startsWith('de')
+      ? 'DE'
+      : 'ES';
   const menuGroups = buildMenuGroups(t, {
     toPhilosophy: () => scrollToSection('#philosophy'),
     toInvest: () => scrollToSection('#invest'),
@@ -480,31 +485,14 @@ export function Navbar() {
                   alt={t('menuOverlay.brand')}
                   loading="eager"
                   decoding="async"
-                  className="w-[300px] max-w-[58vw] h-auto object-contain"
+                  className="premium-menu-brand-logo"
                 />
               </div>
 
               <div className="premium-menu-header-meta">
-                <div className="lang-switcher premium-menu-lang-switcher">
-                  <button
-                    className={`lang-btn ${currentLang === 'es' ? 'active' : ''}`}
-                    onClick={() => changeLanguage('es')}
-                  >
-                    ES
-                  </button>
-                  <button
-                    className={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}
-                    onClick={() => changeLanguage('en')}
-                  >
-                    EN
-                  </button>
-                  <button
-                    className={`lang-btn ${currentLang === 'de' ? 'active' : ''}`}
-                    onClick={() => changeLanguage('de')}
-                  >
-                    DE
-                  </button>
-                </div>
+                <span className="premium-menu-current-lang" aria-label="Current language">
+                  {currentLangCode}
+                </span>
               </div>
             </div>
 

@@ -601,18 +601,18 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding-top: 88px;
-    background: rgba(6, 16, 22, 0.35);
-    backdrop-filter: blur(6px);
+    padding-top: 0;
+    background: rgba(6, 16, 22, 0.28);
+    backdrop-filter: blur(4px);
   }
 
   .premium-menu-shell {
     position: relative;
-    width: min(1520px, 100%);
-    min-height: calc(100vh - 88px);
+    width: 100%;
+    min-height: 100vh;
     background: #f4f5f3;
-    border-top: 1px solid rgba(15, 24, 31, 0.08);
-    box-shadow: 0 24px 55px rgba(4, 15, 22, 0.2);
+    border-top: none;
+    box-shadow: none;
     padding: 0;
     overflow: hidden;
   }
@@ -696,7 +696,7 @@
   .premium-menu-content {
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 176px);
+    min-height: calc(100vh - 88px);
   }
 
   .premium-menu-list {
@@ -710,14 +710,14 @@
     border: none;
     border-bottom: 1px solid rgba(16, 28, 39, 0.1);
     background: transparent;
-    padding: clamp(1.25rem, 2.2vw, 1.95rem) clamp(1.2rem, 2.1vw, 1.8rem) clamp(1.25rem, 2.2vw, 1.95rem) clamp(1.8rem, 3vw, 2.7rem);
+    padding: clamp(0.85rem, 1.5vw, 1.2rem) clamp(1rem, 1.6vw, 1.35rem) clamp(0.85rem, 1.5vw, 1.2rem) clamp(1.5rem, 2.2vw, 2.2rem);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
     color: #39424a;
     font-family: "Montserrat", var(--font-body);
-    font-size: clamp(2rem, 3.1vw, 3.15rem);
+    font-size: clamp(1.25rem, 2.05vw, 1.8rem);
     font-weight: 550;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -732,64 +732,36 @@
   }
 
   .premium-menu-row-arrow {
-    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    font-size: clamp(1.15rem, 1.6vw, 1.4rem);
     line-height: 1;
     color: #101a23;
   }
 
-  .premium-menu-footer {
-    margin-top: auto;
-    border-top: 1px solid rgba(16, 28, 39, 0.12);
-    background: #f8f8f6;
-    padding: 16px clamp(1.2rem, 2.1vw, 2.5rem) 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .premium-menu-utilities {
-    display: flex;
-    align-items: center;
-    gap: clamp(0.8rem, 1.3vw, 1.4rem);
-    flex-wrap: wrap;
-  }
-
-  .premium-menu-utility-link {
+  .premium-menu-lang-switcher {
     border: none;
     background: transparent;
-    color: rgba(15, 28, 39, 0.82);
-    font-size: 0.76rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: 180ms ease;
     padding: 0;
-  }
-
-  .premium-menu-utility-link:hover {
-    color: #101a23;
-  }
-
-  .premium-menu-lang-switcher {
-    border: 1px solid rgba(18, 34, 46, 0.16);
-    background: rgba(255, 255, 255, 0.84);
+    gap: 6px;
   }
 
   .premium-menu-lang-switcher .lang-btn {
     color: rgba(15, 28, 39, 0.72);
+    background: #ffffff;
+    border: 1px solid rgba(18, 34, 46, 0.16);
+    border-radius: 0;
+    min-width: 38px;
+    padding: 7px 10px;
   }
 
   .premium-menu-lang-switcher .lang-btn:hover {
-    color: #101a23;
-    background: rgba(12, 22, 29, 0.06);
+    color: rgba(15, 28, 39, 0.72);
+    background: #ffffff;
   }
 
   .premium-menu-lang-switcher .lang-btn.active {
     color: #f5f6f2;
     background: #10212b;
+    border-color: #10212b;
     box-shadow: none;
   }
 
@@ -832,8 +804,8 @@
   }
 
   .premium-menu-sublist {
-    overflow-y: auto;
-    max-height: calc(100vh - 238px);
+    overflow: hidden;
+    max-height: none;
   }
 
   .premium-menu-row-detail {
@@ -1550,7 +1522,7 @@
     }
 
     .premium-menu-shell {
-      min-height: calc(100vh - 72px);
+      min-height: 100vh;
     }
 
     .premium-menu-header {
@@ -1568,23 +1540,18 @@
     }
 
     .premium-menu-content {
-      min-height: calc(100vh - 144px);
+      min-height: calc(100vh - 72px);
     }
 
     .premium-menu-row {
       padding-left: 18px;
       padding-right: 14px;
-      font-size: clamp(1.5rem, 7.4vw, 2rem);
+      font-size: clamp(1.05rem, 5.2vw, 1.35rem);
       letter-spacing: 0.03em;
     }
 
     .premium-menu-row-arrow {
       font-size: 1.7rem;
-    }
-
-    .premium-menu-footer {
-      padding-left: 16px;
-      padding-right: 16px;
     }
 
     .premium-menu-subheader {
@@ -1593,7 +1560,7 @@
     }
 
     .premium-menu-sublist {
-      max-height: calc(100vh - 218px);
+      max-height: none;
     }
 
     .premium-menu-row-detail {
@@ -1619,9 +1586,7 @@
       padding: 5px 12px;
     }
 
-    .premium-menu-overlay {
-      padding-top: 72px;
-    }
+    .premium-menu-overlay { padding-top: 0; }
 
     .premium-menu-close-trigger {
       font-size: 0.7rem;

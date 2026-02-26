@@ -23,12 +23,12 @@ test('navbar menu overlay switched to hierarchical list layout without cards', (
   assert.match(navbarSource, /setActiveMenuGroup/);
 });
 
-test('menu overlay config defines the three premium menu groups', () => {
+test('menu overlay config defines investment and private submenus', () => {
   const configSource = read('src/components/menuOverlayConfig.ts');
 
-  assert.match(configSource, /id: 'discover'/);
   assert.match(configSource, /id: 'invest'/);
   assert.match(configSource, /id: 'private'/);
+  assert.doesNotMatch(configSource, /id: 'discover'/);
 });
 
 test('all supported locales contain required menu overlay keys', () => {
@@ -36,12 +36,11 @@ test('all supported locales contain required menu overlay keys', () => {
     const data = getLocale(locale);
     const menu = data.menuOverlay ?? {};
 
+    assert.ok(menu.menuWord, `${locale}: menuOverlay.menuWord missing`);
     assert.ok(menu.back, `${locale}: menuOverlay.back missing`);
-    assert.ok(menu.label, `${locale}: menuOverlay.label missing`);
     assert.ok(menu.brand, `${locale}: menuOverlay.brand missing`);
-    assert.ok(menu.groups?.discover, `${locale}: menuOverlay.groups.discover missing`);
     assert.ok(menu.groups?.invest, `${locale}: menuOverlay.groups.invest missing`);
-    assert.ok(menu.utility?.valuation, `${locale}: menuOverlay.utility.valuation missing`);
-    assert.ok(menu.utility?.contact, `${locale}: menuOverlay.utility.contact missing`);
+    assert.ok(menu.links?.valuation, `${locale}: menuOverlay.links.valuation missing`);
+    assert.ok(menu.links?.contact, `${locale}: menuOverlay.links.contact missing`);
   }
 });

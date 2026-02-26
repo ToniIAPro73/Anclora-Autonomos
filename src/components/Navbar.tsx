@@ -233,20 +233,26 @@ export function Navbar() {
 
   const currentLang = i18n.language;
   const menuGroups = buildMenuGroups(t, {
-    toHome: () => scrollToSection('#hero'),
-    toProperties: () => scrollToSection('#properties'),
-    toAbout: () => scrollToSection('#about'),
-    toContact: () => scrollToSection('#contact'),
     toPhilosophy: () => scrollToSection('#philosophy'),
     toInvest: () => scrollToSection('#invest'),
     toNeighborhood: () => scrollToSection('#neighborhood'),
-    toValuation: () => scrollToSection('#valuation'),
     toInsights: () => scrollToSection('#insights'),
     openAgentPortal,
     openPartnerModal,
   });
 
   const activeGroup = menuGroups.find((group) => group.id === activeMenuGroup) ?? null;
+  const menuEntries: Array<
+    | { type: 'link'; label: string; action: () => void }
+    | { type: 'submenu'; id: string; label: string }
+  > = [
+    { type: 'link', label: t('nav.properties'), action: () => scrollToSection('#properties') },
+    { type: 'link', label: t('menuOverlay.links.valuation'), action: () => scrollToSection('#valuation') },
+    { type: 'submenu', id: 'invest', label: t('menuOverlay.groups.invest') },
+    { type: 'submenu', id: 'private', label: t('menuOverlay.privateArea') },
+    { type: 'link', label: t('nav.about'), action: () => scrollToSection('#about') },
+    { type: 'link', label: t('menuOverlay.links.contact'), action: () => scrollToSection('#contact') },
+  ];
 
   return (
     <>
@@ -387,7 +393,7 @@ export function Navbar() {
                   <i />
                   <i />
                 </span>
-                <span>{t('menuOverlay.close')}</span>
+                <span>{t('menuOverlay.menuWord')}</span>
               </button>
 
               <div className="premium-menu-brand">
@@ -395,7 +401,26 @@ export function Navbar() {
               </div>
 
               <div className="premium-menu-header-meta">
-                <span>{t('menuOverlay.label')}</span>
+                <div className="lang-switcher premium-menu-lang-switcher">
+                  <button
+                    className={`lang-btn ${currentLang === 'es' ? 'active' : ''}`}
+                    onClick={() => changeLanguage('es')}
+                  >
+                    ES
+                  </button>
+                  <button
+                    className={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}
+                    onClick={() => changeLanguage('en')}
+                  >
+                    EN
+                  </button>
+                  <button
+                    className={`lang-btn ${currentLang === 'de' ? 'active' : ''}`}
+                    onClick={() => changeLanguage('de')}
+                  >
+                    DE
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -403,51 +428,31 @@ export function Navbar() {
               {!activeGroup && (
                 <>
                   <ul className="premium-menu-list" role="list">
-                    {menuGroups.map((group) => (
-                      <li key={group.id}>
-                        <button
-                          className="premium-menu-row"
-                          onClick={() => setActiveMenuGroup(group.id)}
-                          aria-label={group.label}
-                        >
-                          <span>{group.label}</span>
-                          <span className="premium-menu-row-arrow" aria-hidden>&rsaquo;</span>
-                        </button>
-                      </li>
-                    ))}
+                    {menuEntries.map((entry) => {
+                      if (entry.type === 'link') {
+                        return (
+                          <li key={entry.label}>
+                            <button className="premium-menu-row" onClick={entry.action}>
+                              <span>{entry.label}</span>
+                            </button>
+                          </li>
+                        );
+                      }
+
+                      return (
+                        <li key={entry.id}>
+                          <button
+                            className="premium-menu-row"
+                            onClick={() => setActiveMenuGroup(entry.id)}
+                            aria-label={entry.label}
+                          >
+                            <span>{entry.label}</span>
+                            <span className="premium-menu-row-arrow" aria-hidden>&rsaquo;</span>
+                          </button>
+                        </li>
+                      );
+                    })}
                   </ul>
-
-                  <div className="premium-menu-footer">
-                    <div className="premium-menu-utilities">
-                      <button className="premium-menu-utility-link" onClick={() => scrollToSection('#valuation')}>
-                        {t('menuOverlay.utility.valuation')}
-                      </button>
-                      <button className="premium-menu-utility-link" onClick={() => scrollToSection('#contact')}>
-                        {t('menuOverlay.utility.contact')}
-                      </button>
-                    </div>
-
-                    <div className="lang-switcher premium-menu-lang-switcher">
-                      <button
-                        className={`lang-btn ${currentLang === 'es' ? 'active' : ''}`}
-                        onClick={() => changeLanguage('es')}
-                      >
-                        ES
-                      </button>
-                      <button
-                        className={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}
-                        onClick={() => changeLanguage('en')}
-                      >
-                        EN
-                      </button>
-                      <button
-                        className={`lang-btn ${currentLang === 'de' ? 'active' : ''}`}
-                        onClick={() => changeLanguage('de')}
-                      >
-                        DE
-                      </button>
-                    </div>
-                  </div>
                 </>
               )}
 

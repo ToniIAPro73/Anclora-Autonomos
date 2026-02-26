@@ -168,18 +168,16 @@
   },
   "menuOverlay": {
     "close": "CLOSE",
+    "menuWord": "MENU",
     "back": "Back",
-    "label": "Main menu",
     "brand": "ANCLORA PRIVATE ESTATES",
-    "explore": "Explore",
     "groups": {
-      "discover": "Collection",
       "invest": "Investment",
       "privateArea": "Private area"
     },
-    "utility": {
-      "valuation": "Value property",
-      "contact": "Contact"
+    "links": {
+      "valuation": "Value Property",
+      "contact": "Contacts"
     },
     "privateArea": "Private Area",
     "privateAreaDescription": "Centralized access to Anclora professional portals based on profile and permissions.",

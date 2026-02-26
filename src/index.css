@@ -520,8 +520,7 @@
   .newsletter-submit,
   .btn-cookie-premium,
   .btn-scroll,
-  .btn-cookie-trigger,
-  .premium-private-card {
+  .btn-cookie-trigger {
     position: relative;
     overflow: hidden;
   }
@@ -531,8 +530,7 @@
   .newsletter-submit::before,
   .btn-cookie-premium::before,
   .btn-scroll::before,
-  .btn-cookie-trigger::before,
-  .premium-private-card::before {
+  .btn-cookie-trigger::before {
     content: "";
     position: absolute;
     top: 0;
@@ -549,8 +547,7 @@
   .newsletter-submit:hover::before,
   .btn-cookie-premium:hover::before,
   .btn-scroll:hover::before,
-  .btn-cookie-trigger:hover::before,
-  .premium-private-card:hover::before {
+  .btn-cookie-trigger:hover::before {
     left: 160%;
     transition: all 0.8s ease-in-out;
   }

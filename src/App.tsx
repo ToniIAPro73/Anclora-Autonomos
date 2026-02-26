@@ -128,20 +128,6 @@ function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (!showDeferredSections) return;
-
-    const notifyDeferredSectionsMounted = () => {
-      window.dispatchEvent(new Event('anclora:deferred-sections-mounted'));
-    };
-
-    const rafId = window.requestAnimationFrame(() => {
-      window.setTimeout(notifyDeferredSectionsMounted, 0);
-    });
-
-    return () => window.cancelAnimationFrame(rafId);
-  }, [showDeferredSections]);
-
-  useEffect(() => {
     let scrollTriggerApi: ScrollTriggerApi | null = null;
     let timerId: number | null = null;
     let isDisposed = false;

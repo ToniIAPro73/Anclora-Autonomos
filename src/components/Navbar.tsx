@@ -55,15 +55,22 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handleDeferredSectionsMounted = () => {
+    const reconcilePendingNavigation = () => {
       const pendingHref = sessionStorage.getItem(pendingScrollTargetKey);
       if (!pendingHref) return;
+
+      const target = document.querySelector(pendingHref) as HTMLElement | null;
+      if (!target) {
+        window.dispatchEvent(new Event('anclora:reveal-deferred-sections'));
+        return;
+      }
+
       sessionStorage.removeItem(pendingScrollTargetKey);
       scrollToSectionRef.current(pendingHref);
     };
 
-    window.addEventListener('anclora:deferred-sections-mounted', handleDeferredSectionsMounted);
-    return () => window.removeEventListener('anclora:deferred-sections-mounted', handleDeferredSectionsMounted);
+    const intervalId = window.setInterval(reconcilePendingNavigation, 150);
+    return () => window.clearInterval(intervalId);
   }, [pendingScrollTargetKey]);
 
   const getScrollTrigger = async () => {

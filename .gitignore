@@ -1,1 +1,8 @@
 node_modules
+dist
+.next
+.vite
+*.log
+__pycache__/
+.venv/
+.DS_Store

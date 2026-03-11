@@ -28,6 +28,8 @@ test('menu overlay config defines investment and private submenus', () => {
 
   assert.match(configSource, /id: 'invest'/);
   assert.match(configSource, /id: 'private'/);
+  assert.match(configSource, /openPartnerPortal/);
+  assert.match(configSource, /openDataLabPortal/);
   assert.doesNotMatch(configSource, /id: 'discover'/);
 });
 

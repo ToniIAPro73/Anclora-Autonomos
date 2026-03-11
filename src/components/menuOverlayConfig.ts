@@ -18,7 +18,8 @@ type MenuActions = {
   toNeighborhood: () => void;
   toInsights: () => void;
   openAgentPortal: () => void;
-  openPartnerModal: () => void;
+  openPartnerPortal: () => void;
+  openDataLabPortal: () => void;
 };
 
 export function buildMenuGroups(t: TranslateFn, actions: MenuActions): MenuGroup[] {
@@ -45,12 +46,12 @@ export function buildMenuGroups(t: TranslateFn, actions: MenuActions): MenuGroup
         {
           label: t('menuOverlay.partnerPortalTitle'),
           description: t('menuOverlay.partnerPortalDescription'),
-          action: actions.openPartnerModal,
+          action: actions.openPartnerPortal,
         },
         {
           label: t('menuOverlay.dataLabPortalTitle'),
           description: t('menuOverlay.dataLabPortalDescription'),
-          action: actions.openPartnerModal,
+          action: actions.openDataLabPortal,
         },
       ],
     },

@@ -2,23 +2,22 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ensureLanguageResources } from '../i18n';
 import { buildMenuGroups } from './menuOverlayConfig';
+import { getDataLabPortalUrl, getNexusLoginUrl, getPartnerPortalUrl } from '../lib/privateAreaAccess';
 
 export function Navbar() {
   const pendingScrollTargetKey = 'anclora:pending-scroll-target';
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   const [activeMenuGroup, setActiveMenuGroup] = useState<string | null>(null);
   const scrollToSectionRef = useRef<(href: string) => void>(() => {});
   const [isMobileViewport, setIsMobileViewport] = useState(() => {
     if (typeof window === 'undefined') return false;
     return window.innerWidth <= 768;
   });
-  const nexusLoginUrl =
-    import.meta.env.VITE_ANCLORA_NEXUS_LOGIN_URL ??
-    import.meta.env.VITE_NEXUS_LOGIN_URL ??
-    'https://nexus.anclora.group/login';
+  const nexusLoginUrl = getNexusLoginUrl();
+  const partnerPortalUrl = getPartnerPortalUrl();
+  const dataLabPortalUrl = getDataLabPortalUrl();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,17 +28,16 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = isMenuOpen || isPartnerModalOpen ? 'hidden' : '';
+    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isMenuOpen, isPartnerModalOpen]);
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsMenuOpen(false);
-        setIsPartnerModalOpen(false);
         setActiveMenuGroup(null);
       }
     };
@@ -283,10 +281,16 @@ export function Navbar() {
     window.location.href = nexusLoginUrl;
   };
 
-  const openPartnerModal = () => {
+  const openPartnerPortal = () => {
     setIsMenuOpen(false);
     setActiveMenuGroup(null);
-    setIsPartnerModalOpen(true);
+    window.location.href = partnerPortalUrl;
+  };
+
+  const openDataLabPortal = () => {
+    setIsMenuOpen(false);
+    setActiveMenuGroup(null);
+    window.location.href = dataLabPortalUrl;
   };
 
   useEffect(() => {
@@ -307,7 +311,8 @@ export function Navbar() {
     toNeighborhood: () => scrollToSection('#neighborhood'),
     toInsights: () => scrollToSection('#insights'),
     openAgentPortal,
-    openPartnerModal,
+    openPartnerPortal,
+    openDataLabPortal,
   });
 
   const activeGroup = menuGroups.find((group) => group.id === activeMenuGroup) ?? null;
@@ -565,18 +570,6 @@ export function Navbar() {
                 </>
               )}
             </div>
-          </div>
-        </div>
-      )}
-
-      {isPartnerModalOpen && (
-        <div className="premium-status-overlay" onClick={() => setIsPartnerModalOpen(false)}>
-          <div className="premium-status-card" onClick={(e) => e.stopPropagation()}>
-            <h3>{t('menuOverlay.partnerModalTitle')}</h3>
-            <p>{t('menuOverlay.partnerModalText')}</p>
-            <button className="btn-anclora-premium !min-w-[190px] !h-[50px] !text-[0.62rem]" onClick={() => setIsPartnerModalOpen(false)}>
-              {t('menuOverlay.partnerModalCta')}
-            </button>
           </div>
         </div>
       )}

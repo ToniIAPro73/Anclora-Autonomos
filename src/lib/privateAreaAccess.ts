@@ -4,6 +4,14 @@ function trimTrailingSlash(value: string): string {
   return value.replace(/\/+$/, '');
 }
 
+function normalizeLanguage(value: string | null | undefined): 'es' | 'en' | 'de' | 'fr' | null {
+  const candidate = String(value || '').trim().toLowerCase();
+  if (candidate === 'es' || candidate === 'en' || candidate === 'de' || candidate === 'fr') {
+    return candidate;
+  }
+  return null;
+}
+
 function normalizeBaseUrl(value: string | undefined, fallback: string): string {
   const candidate = String(value || '').trim();
   if (!candidate) return fallback;
@@ -11,28 +19,44 @@ function normalizeBaseUrl(value: string | undefined, fallback: string): string {
 }
 
 function deriveBaseFromLogin(loginUrl: string): string {
-  return loginUrl.replace(/\/login\/?$/, '');
+  const url = new URL(loginUrl);
+  url.pathname = url.pathname.replace(/\/login\/?$/, '') || '/';
+  url.search = '';
+  url.hash = '';
+  return trimTrailingSlash(url.toString());
 }
 
-export function getNexusLoginUrl(): string {
-  return normalizeBaseUrl(
+function withLanguage(url: string, language?: string | null): string {
+  const normalized = normalizeLanguage(language);
+  if (!normalized) return url;
+  const nextUrl = new URL(url);
+  nextUrl.searchParams.set('lang', normalized);
+  return nextUrl.toString();
+}
+
+export function getNexusLoginUrl(language?: string | null): string {
+  const loginUrl = normalizeBaseUrl(
     import.meta.env.VITE_ANCLORA_NEXUS_LOGIN_URL ?? import.meta.env.VITE_NEXUS_LOGIN_URL,
     DEFAULT_NEXUS_LOGIN_URL,
   );
+  return withLanguage(loginUrl, language);
 }
 
-export function getPrivateAreaBaseUrl(): string {
-  const loginUrl = getNexusLoginUrl();
+export function getPrivateAreaBaseUrl(language?: string | null): string {
+  const loginUrl = getNexusLoginUrl(language);
   const fallbackBase = deriveBaseFromLogin(loginUrl);
-  return normalizeBaseUrl(import.meta.env.VITE_ANCLORA_PRIVATE_AREA_URL, fallbackBase);
+  const baseUrl = normalizeBaseUrl(import.meta.env.VITE_ANCLORA_PRIVATE_AREA_URL, fallbackBase);
+  return withLanguage(baseUrl, language);
 }
 
-export function getPartnerPortalUrl(): string {
-  const fallback = `${getPrivateAreaBaseUrl()}/private-area/partner`;
-  return normalizeBaseUrl(import.meta.env.VITE_ANCLORA_PARTNER_PORTAL_URL, fallback);
+export function getPartnerPortalUrl(language?: string | null): string {
+  const fallback = `${normalizeBaseUrl(import.meta.env.VITE_ANCLORA_PRIVATE_AREA_URL, deriveBaseFromLogin(getNexusLoginUrl(language)))}/private-area/partner`;
+  const url = normalizeBaseUrl(import.meta.env.VITE_ANCLORA_PARTNER_PORTAL_URL, fallback);
+  return withLanguage(url, language);
 }
 
-export function getDataLabPortalUrl(): string {
-  const fallback = `${getPrivateAreaBaseUrl()}/private-area/data-lab`;
-  return normalizeBaseUrl(import.meta.env.VITE_ANCLORA_DATA_LAB_URL, fallback);
+export function getDataLabPortalUrl(language?: string | null): string {
+  const fallback = `${normalizeBaseUrl(import.meta.env.VITE_ANCLORA_PRIVATE_AREA_URL, deriveBaseFromLogin(getNexusLoginUrl(language)))}/private-area/data-lab`;
+  const url = normalizeBaseUrl(import.meta.env.VITE_ANCLORA_DATA_LAB_URL, fallback);
+  return withLanguage(url, language);
 }

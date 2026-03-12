@@ -15,9 +15,9 @@ export function Navbar() {
     if (typeof window === 'undefined') return false;
     return window.innerWidth <= 768;
   });
-  const nexusLoginUrl = getNexusLoginUrl();
-  const partnerPortalUrl = getPartnerPortalUrl();
-  const dataLabPortalUrl = getDataLabPortalUrl();
+  const nexusLoginUrl = getNexusLoginUrl(i18n.language);
+  const partnerPortalUrl = getPartnerPortalUrl(i18n.language);
+  const dataLabPortalUrl = getDataLabPortalUrl(i18n.language);
 
   useEffect(() => {
     const handleScroll = () => {

@@ -153,7 +153,7 @@
     "partnerPortalTitle": "Portail Partenaire",
     "partnerPortalDescription": "Accès pour partenaires stratégiques et collaborateurs.",
     "dataLabPortalTitle": "Anclora Data Lab",
-    "dataLabPortalDescription": "Packs d'intelligence, signaux territoriaux et actifs analytiques avec accès contrôlé.",
+    "dataLabPortalDescription": "Packs d'intelligence, signaux territoriaux et actifs analytiques avec accès sélectif pour partenaires, clients et investisseurs autorisés.",
     "partnerModalTitle": "Portail en préparation",
     "partnerModalText": "Nous travaillons pour activer cet accès au plus vite. Pour l'instant, seul le Portail Agent (Anclora Nexus) est opérationnel.",
     "partnerModalCta": "Compris"
